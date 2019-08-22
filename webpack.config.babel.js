@@ -44,7 +44,6 @@ var config = {
   },
 
   externals: NODE_ENV === 'test' ? [] : [
-    'cdnizer',
     'aws-sdk',
     'lodash',
     's3',

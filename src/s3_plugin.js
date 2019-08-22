@@ -3,7 +3,6 @@ import https from 'https'
 import fs from 'fs'
 import path from 'path'
 import ProgressBar from 'progress'
-import cdnizer from 'cdnizer'
 import _ from 'lodash'
 import mime from 'mime/lite'
 import {S3, CloudFront} from 'aws-sdk'
@@ -39,7 +38,6 @@ module.exports = class S3Plugin {
       htmlFiles,
       basePathTransform = DEFAULT_TRANSFORM,
       s3Options = {},
-      cdnizerOptions = {},
       s3UploadOptions = {},
       cloudfrontInvalidateOptions = {},
       priority
@@ -48,7 +46,6 @@ module.exports = class S3Plugin {
     this.uploadOptions = s3UploadOptions
     this.cloudfrontInvalidateOptions = cloudfrontInvalidateOptions
     this.isConnected = false
-    this.cdnizerOptions = cdnizerOptions
     this.urlMappings = []
     this.uploadTotal = 0
     this.uploadProgress = 0
@@ -69,11 +66,6 @@ module.exports = class S3Plugin {
       s3Options,
       maxAsyncS3: 50
     }
-
-    this.noCdnizer = !Object.keys(this.cdnizerOptions).length
-
-    if (!this.noCdnizer && !this.cdnizerOptions.files)
-      this.cdnizerOptions.files = []
   }
 
   apply(compiler) {
@@ -143,44 +135,8 @@ module.exports = class S3Plugin {
     return Promise.resolve(files)
   }
 
-  cdnizeHtml(file) {
-    return new Promise((resolve, reject) => {
-      fs.readFile(file.path, (err, data) => {
-        if (err)
-          return reject(err)
-
-        fs.writeFile(file.path, this.cdnizer(data.toString()), (err) => {
-          if (err)
-            return reject(err)
-
-          resolve(file)
-        })
-      })
-    })
-  }
-
   changeUrls(files = []) {
-    if (this.noCdnizer)
-      return Promise.resolve(files)
-
-    var allHtml
-
-    const {directory, htmlFiles = []} = this.options
-
-    if (htmlFiles.length)
-      allHtml = this.addPathToFiles(htmlFiles, directory).concat(files)
-    else
-      allHtml = files
-
-    this.cdnizerOptions.files = allHtml.map(({name}) => `{/,}*${name}*`)
-    this.cdnizer = cdnizer(this.cdnizerOptions)
-
-    const [cdnizeFiles, otherFiles] = _(allHtml)
-      .uniq('name')
-      .partition((file) => /\.(html|css)/.test(file.name))
-      .value()
-
-    return Promise.all(cdnizeFiles.map(file => this.cdnizeHtml(file)).concat(otherFiles))
+    return Promise.resolve(files)
   }
 
   filterAllowedFiles(files) {
@@ -302,9 +258,6 @@ module.exports = class S3Plugin {
     const upload = this.client.upload(
       _.merge({Key, Body}, DEFAULT_UPLOAD_OPTIONS, s3Params)
     )
-
-    if (!this.noCdnizer)
-      this.cdnizerOptions.files.push(`*${fileName}*`)
 
     return {upload, promise: upload.promise()}
   }

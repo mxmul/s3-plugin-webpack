@@ -47,9 +47,6 @@ var config = {
       },
       s3UploadOptions: {
         Bucket: 'MyBucket'
-      },
-      cdnizerOptions: {
-        defaultCDNBase: 'http://asdf.ca'
       }
     })
   ]
@@ -207,9 +204,6 @@ var config = {
 - `basePath`: Provide the namespace of uploaded files on S3
 - `directory`: Provide a directory to upload (if not supplied, will upload js/css from compilation)
 - `htmlFiles`: Html files to cdnize (defaults to all in output directory)
-- `cdnizerCss`: Config for css cdnizer check below
-- `noCdnizer`: Disable cdnizer (defaults to true if no cdnizerOptions passed)
-- `cdnizerOptions`: options to pass to [cdnizer](https://www.npmjs.com/package/cdnizer)
 - `basePathTransform`: transform the base path to add a folder name. Can return a promise or a string
 - `progress`: Enable progress bar (defaults true)
 - `priority`: priority order to your files as regex array. The ones not matched by regex are uploaded first. This rule becomes useful when avoiding s3 eventual consistency issues

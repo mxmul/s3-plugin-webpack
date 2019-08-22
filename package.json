@@ -1,11 +1,11 @@
 {
-  "name": "webpack-s3-plugin",
+  "name": "@mxmul/webpack-s3-plugin",
   "version": "1.0.3",
   "description": "Uploads compiled assets to s3 after build",
   "main": "dist/s3_plugin.js",
   "scripts": {
     "build": "webpack --mode production",
-    "prepublishOnly": "npm run lint && npm run test && npm run build",
+    "prepublishOnly": "npm run build",
     "test": "NODE_ENV='test' mocha -t 10000 --require babel-register",
     "lint": "eslint ./src ./test",
     "watch": "webpack --watch --mode development",
@@ -32,7 +32,6 @@
   "homepage": "https://github.com/webpack-contrib/s3-plugin-webpack",
   "dependencies": {
     "aws-sdk": "^2.282.1",
-    "cdnizer": "^3.0.2",
     "lodash": "^4.17.10",
     "mime": "^2.3.1",
     "progress": "^2.0.0",
