@@ -10,7 +10,7 @@ This plugin will upload all built assets to s3
 ### Install Instructions
 
 ```bash
-$ npm i webpack-s3-plugin
+$ npm i @mxmul/webpack-s3-plugin
 ```
 Note: This plugin needs NodeJS > 0.12.0
 
@@ -27,9 +27,9 @@ s3Options: {
 > s3UploadOptions default to `ACL: 'public-read'` so you may need to override if you have other needs. See [#28](https://github.com/MikaAK/s3-plugin-webpack/issues/28#issuecomment-309171024)
 
 
-##### Require `webpack-s3-plugin`
+##### Require `@mxmul/webpack-s3-plugin`
 ```javascript
-var S3Plugin = require('webpack-s3-plugin')
+var S3Plugin = require('@mxmul/webpack-s3-plugin')
 ```
 
 ##### With exclude
