@@ -1,6 +1,6 @@
 {
   "name": "@mxmul/webpack-s3-plugin",
-  "version": "1.0.3",
+  "version": "1.0.0",
   "description": "Uploads compiled assets to s3 after build",
   "main": "dist/s3_plugin.js",
   "scripts": {
